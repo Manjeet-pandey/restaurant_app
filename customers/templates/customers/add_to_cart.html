@@ -1,0 +1,161 @@
+{% extends 'customers/base.html' %}
+{%block content %}
+{% include 'customers/navigation.html' %}
+  <section class="h-100 h-custom" style="background-color: #d2c9ff;" >
+    <div class="container py-5 h-100">
+      <div class="row d-flex justify-content-center align-items-center h-100">
+        <div class="col-12">
+          <div class="card card-registration card-registration-2" style="border-radius: 15px;">
+            <div class="card-body p-0">
+              <div class="row g-0">
+                <div class="col-lg-8">
+                  <div class="p-5">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                      <h1 class="fw-bold mb-0 text-black">Shopping Cart</h1>
+                      <h6 class="mb-0 text-muted">{{item_count}} items</h6>
+                    </div>
+                    {% for item in cart_items %}
+                    <hr class="my-4">
+  
+                    <div class="row mb-4 d-flex justify-content-between align-items-center">
+                      <div class="col-md-2 col-lg-2 col-xl-2">
+                        <img
+                          src="{{item.items.image.url}}"
+                          class="img-fluid rounded-3" alt="Cotton T-shirt">
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-3">
+                        <h6 class="text-black mb-0">{{item.items.name}}</h6>
+                      </div>
+                      <div class="col-md-3 col-lg-3 col-xl-2 d-flex">
+                        <button class="btn btn-link px-2">
+                          <a href="{% url 'remove' item.id %}"> <i class="fas fa-minus"></i></a>
+                        </button>
+  
+                       
+                      </div>
+                      <div class="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                        <h6 class="mb-0" id="unit_price">${{item.items.price}}</h6>
+                      </div>
+                      
+                    </div>
+                    {% endfor %}
+                  
+                    <hr class="my-4">
+  
+                    <div class="pt-5">
+                      <h6 class="mb-0"><a href="{% url 'menu' %}" class="text-body"><i
+                            class="fas fa-long-arrow-alt-left me-2"></i>Back to shop</a></h6>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-4 bg-grey">
+                  <div class="p-5">
+                    <h3 class="fw-bold mb-5 mt-2 pt-1">Summary</h3>
+                    <hr class="my-4">
+  
+                    <!-- <div class="d-flex justify-content-between mb-4">
+                      <h5 class="text-uppercase">items 3</h5>
+                      <h5></h5>
+                    </div> -->
+  
+                    <h5 class="text-uppercase mb-3">Shipping</h5>
+  
+                    <div class="mb-4 pb-2">
+                      <select class="select calculate">
+                        <option data-price="0" value="1">Pick-Up- $0.00 </option>
+                        <option data-price="5" value="2">Standard-Delivery- $5.00</option>
+                        <option data-price="10" value="3">Fast Delivery - $10.00</option>
+                       
+                      </select>
+                    </div>
+  
+                    <!-- <h5 class="text-uppercase mb-3">Give code</h5>
+  
+                    <div class="mb-5">
+                      <div class="form-outline">
+                        <input type="text" id="form3Examplea2" class="form-control form-control-lg" />
+                        <label class="form-label" for="form3Examplea2">Enter your code</label>
+                      </div>
+                    </div> -->
+  
+                    <hr class="my-4">
+                    <input type="hidden" id="cartHidden" value="{{total_price}}">
+                    <div class="d-flex justify-content-between mb-5">
+                      <h5 class="text-uppercase">Total</h5>
+                      <h5 id="cartTotal">${{total_price}}</h5>
+                    </div>
+  
+                    <button type="button" class="btn btn-dark btn-block btn-lg launch" data-toggle="modal" data-target="#staticBackdrop"
+                      data-mdb-ripple-color="dark">Checkout</button>
+  
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+         <div class="modal-content">
+            <div class="modal-body">
+               <div class="text-right"> <i class="fa fa-close close" data-dismiss="modal"></i> </div>
+               <div class="tabs mt-3">
+                  <ul class="nav nav-tabs" id="myTab" role="tablist">
+                     <li class="nav-item" role="presentation"> <a class="nav-link active" id="visa-tab" data-toggle="tab" href="#visa" role="tab" aria-controls="visa" aria-selected="true"> <img src="https://i.imgur.com/sB4jftM.png" width="80"> </a> </li>
+                     <li class="nav-item" role="presentation"><a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="false"><i class="fa fa-map-marker" aria-hidden="true"></i><span>Location</span> </a> </li>
+                  </ul>
+                  <div class="tab-content" id="myTabContent">
+                     <div class="tab-pane fade show active" id="visa" role="tabpanel" aria-labelledby="visa-tab">
+                        <div class="mt-4 mx-4">
+                           
+                           <div class="form mt-3">
+                              <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>CardHolder name</span> </div>
+                              <div class="inputbox"> <input type="text" name="name"  class="form-control" required="required"> <span>Card Number</span>  </div>
+                              <div class="d-flex flex-row">
+                                 <div class="inputbox"> <input type="text" name="name" class="form-control" required="required"> <span>CVV</span> </div>
+                                 <div class="inputbox"> <input type="text" name="name"  class="form-control" required="required"> <span>Expiry Date</span> </div>
+                              </div>
+                              <div class="px-5 pay hello"> <button class="btn btn-success btn-block btnNext" ><a class="nav-link" id="paypal-tab" data-toggle="tab" href="#paypal" role="tab" aria-controls="paypal" aria-selected="false"> Confirm </a></button> </div>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="tab-pane fade" id="paypal" role="tabpanel" aria-labelledby="paypal-tab">
+                        <div class="px-5 mt-5">
+                          <form class="form mt-3" method="POST">
+                            {% csrf_token %}
+                            <div class="inputbox"> <input type="text" name="state" class="form-control" required="required"> <span>State</span> </div>
+                            <div class="inputbox"> <input type="text" name="city"  class="form-control" required="required"> <span>City</span>  </div>
+                            <div class="d-flex flex-row">
+                               <div class="inputbox"> <input type="text" name="postal_code" class="form-control" required="required"> <span>Postal Code</span> </div>
+                               <div class="inputbox"> <input type="text" name="name"  class="form-control" required="required"> <span>Address</span> </div>
+                            </div>
+                           <div class="pay px-5" ><button type="submit" class="btn btn-primary btn-block"> Complete Order</button> </div>
+                           <!-- <button class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModalCenter"></button> -->
+                          </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      
+        </div>
+        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" >
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Order complete</h5>
+                <div class="text-right"><a href="{% url 'index' %}"> <i class="fa fa-close close"></i></a> </div>
+              </div>
+              <div class="modal-body">
+                Your order has been complete. Thank You.
+              </div>
+          
+            </div>
+          </div>
+        </div>
+  </section>
+
+  {%endblock %}
